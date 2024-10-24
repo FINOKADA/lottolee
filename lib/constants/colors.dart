@@ -1,22 +1,30 @@
-// lib/constants/colors.dart
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // 보라색 계열의 메인 컬러
-  static const primaryColor = Color(0xFF7E57C2); // 진한 보라색
-  static const secondaryColor = Color(0xFF9575CD); // 중간 보라색
-  static const accentColor = Color(0xFFB39DDB); // 연한 보라색
+  // Primary Colors
+  static const Color primary = Color.fromRGBO(109, 56, 233, 1); // 메인
+  static const Color secondary = Color(0xFFFFB6C1); // 보조 핑크
 
-  // 기본 색상
-  static const backgroundColor = Colors.white; // 흰색 배경
-  static const surfaceColor = Color(0xFFF8F7FC); // 살짝 보라빛 도는 흰색
+  // Background Colors
+  static const Color background = Colors.white; // 배경색
+  static const Color surface = Colors.white; // 표면색
 
-  // 텍스트 색상
-  static const textPrimaryColor = Color(0xFF2C1810); // 진한 텍스트
-  static const textSecondaryColor = Color(0xFF6E6E6E); // 보조 텍스트
+  // Text Colors
+  static const Color textPrimary = Color.fromRGBO(109, 56, 233, 1); // 주요 텍스트
+  static const Color textSecondary = Colors.grey; // 보조 텍스트
 
-  // 기능성 색상
-  static const successColor = Color(0xFF66BB6A); // 성공
-  static const errorColor = Color(0xFFFF5252); // 에러
-  static const warningColor = Color(0xFFFFB300); // 경고
+  // Icon Colors
+  static const Color iconPrimary = Color.fromRGBO(109, 56, 233, 1); // 주요 아이콘
+  static const Color iconSecondary = Colors.grey; // 보조 아이콘
+
+  // Navigation Bar Colors
+  static const Color navSelected =
+      Color.fromRGBO(109, 56, 233, 1); // 선택된 네비게이션 아이템
+  static const Color navUnselected = Colors.grey; // 선택되지 않은 네비게이션 아이템
+
+  // Gradient Colors
+  static const List<Color> primaryGradient = [
+    Color.fromRGBO(109, 56, 233, 1),
+    Color(0xFFFFB6C1),
+  ];
 }

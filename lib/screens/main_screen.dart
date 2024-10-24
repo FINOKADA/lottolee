@@ -12,10 +12,30 @@ class MainScreenState extends State<MainScreen> {
   int _notificationCount = 0;
 
   final List<Widget> _screens = [
-    const Center(child: Text('홈')),
-    const Center(child: Text('예측')),
-    const Center(child: Text('분석')),
-    const Center(child: Text('내정보')),
+    const Center(
+      child: Text(
+        '홈',
+        style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1)), // 핑크색 텍스트
+      ),
+    ),
+    const Center(
+      child: Text(
+        '예측',
+        style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1)),
+      ),
+    ),
+    const Center(
+      child: Text(
+        '분석',
+        style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1)),
+      ),
+    ),
+    const Center(
+      child: Text(
+        '내정보',
+        style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1)),
+      ),
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -24,38 +44,31 @@ class MainScreenState extends State<MainScreen> {
     });
   }
 
-  // 알림 카운트를 업데이트하는 메서드 추가
   void updateNotificationCount(int count) {
     setState(() {
       _notificationCount = count;
     });
   }
 
-  // 알림을 확인하고 카운트를 0으로 만드는 메서드
   void _checkNotifications() {
     setState(() {
       _notificationCount = 0;
     });
-    // 여기에 알림 목록을 보여주는 로직 추가
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            'assets/images/logo.jpg',
-            width: 80,
-            height: 80,
-          ),
-        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: Container(),
         actions: [
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.notifications),
+                icon: const Icon(Icons.notifications,
+                    color: Color.fromRGBO(109, 56, 233, 1)),
                 onPressed: _checkNotifications,
               ),
               if (_notificationCount > 0)
@@ -65,7 +78,7 @@ class MainScreenState extends State<MainScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: const Color.fromRGBO(109, 56, 233, 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     constraints: const BoxConstraints(
@@ -85,7 +98,8 @@ class MainScreenState extends State<MainScreen> {
             ],
           ),
           PopupMenuButton<String>(
-            icon: const Icon(Icons.menu),
+            icon:
+                const Icon(Icons.menu, color: Color.fromRGBO(109, 56, 233, 1)),
             onSelected: (value) {
               switch (value) {
                 case 'settings':
@@ -102,20 +116,22 @@ class MainScreenState extends State<MainScreen> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
                 value: 'settings',
-                child: Text('설정'),
+                child: Text('설정',
+                    style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1))),
               ),
               const PopupMenuItem<String>(
                 value: 'help',
-                child: Text('도움말'),
+                child: Text('도움말',
+                    style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1))),
               ),
               const PopupMenuItem<String>(
                 value: 'about',
-                child: Text('앱 정보'),
+                child: Text('앱 정보',
+                    style: TextStyle(color: Color.fromRGBO(109, 56, 233, 1))),
               ),
             ],
           ),
         ],
-        elevation: 0,
       ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -139,6 +155,17 @@ class MainScreenState extends State<MainScreen> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: const Color.fromRGBO(109, 56, 233, 1), // 핑크색
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        elevation: 8,
+        showUnselectedLabels: true,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: const TextStyle(fontSize: 12),
       ),
     );
   }

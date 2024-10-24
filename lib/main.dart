@@ -1,7 +1,7 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
-import 'constants/theme.dart';
+import 'screens/splash_screen.dart';
 import 'screens/main_screen.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LottoLEE',
       theme: AppTheme.lightTheme,
-      home: const MainScreen(),
-      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/main': (context) => const MainScreen(),
+      },
     );
   }
 }
