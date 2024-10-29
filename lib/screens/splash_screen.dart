@@ -9,57 +9,50 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
-  late Animation<Offset> _slideAnimation;
+  late AnimationController _animationController;
+  late Animation<double> _lineAnimation;
+  late Animation<double> _leeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+    _animationController = AnimationController(
       vsync: this,
+      duration: const Duration(milliseconds: 2000),
     );
 
-    _fadeAnimation = Tween<double>(
+    // 라인 애니메이션
+    _lineAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(0.7, 1.0, curve: Curves.easeOutCirc),
+    ));
+
+    // Lee 애니메이션
+    _leeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      parent: _animationController,
+      curve: const Interval(0.3, 0.6, curve: Curves.easeOut),
     ));
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.5,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    ));
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.2),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    ));
-
-    _controller.forward();
-
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          Navigator.pushReplacementNamed(context, '/main');
-        });
-      }
+    _animationController.forward().then((_) {
+      _navigateToMain();
     });
+  }
+
+  void _navigateToMain() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+    Navigator.of(context).pushReplacementNamed('/main');
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -68,68 +61,67 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: SlideTransition(
-          position: _slideAnimation,
-          child: ScaleTransition(
-            scale: _scaleAnimation,
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'LoTTo',
-                    style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(109, 56, 233, 1),
-                      letterSpacing: 3,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(109, 56, 233, 1),
-                          Color(0xFFFFB6C1),
-                        ],
-                      ).createShader(bounds);
-                    },
-                    child: const Text(
-                      'LEE',
-                      style: TextStyle(
-                        fontSize: 64,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        letterSpacing: 5,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _controller,
-                      curve: const Interval(0.6, 1.0, curve: Curves.easeIn),
-                    ),
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromRGBO(109, 56, 233, 1),
-                            Color(0xFFFFB6C1),
-                          ],
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 상단 장식 라인
+                Container(
+                  width: 100 * _lineAnimation.value,
+                  height: 1.5,
+                  color: const Color(0xFF4A148C),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Lee 텍스트
+                Transform.translate(
+                  offset: Offset(0, 10 * (1 - _leeAnimation.value)),
+                  child: Opacity(
+                    opacity: _leeAnimation.value,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // 배경 원
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFF4A148C).withOpacity(0.1),
+                              width: 1,
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+                        // Lee 텍스트
+                        const Text(
+                          'Lee',
+                          style: TextStyle(
+                            fontFamily: 'Dancing Script',
+                            fontSize: 42,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF7B1FA2),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // 하단 장식 라인
+                Container(
+                  width: 100 * _lineAnimation.value,
+                  height: 1.5,
+                  color: const Color(0xFF4A148C),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
