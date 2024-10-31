@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
                   color: const Color(0xFF4A148C),
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 20), // 수정: 40에서 20으로 변경
 
                 // Lee 텍스트
                 Transform.translate(
@@ -111,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 20), // 수정: 40에서 20으로 변경
 
                 // 하단 장식 라인
                 Container(
